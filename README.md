@@ -43,17 +43,23 @@ class CPointError
 Then in the main function, we use ceres solver to minimise the sum of the squared residuals.
 <br>
 In the example, we would like to compute the undistorted coordinates of the four image corners i.e. top-left, top-right, bottom-right and bottom-left. On a side note, we may consider using (0.5, 0.5) instead of (0,0) for the top-left corner and so on to refer to the point as in the centre of the pixel.<br>
+
 ```
+
 typedef std::vector< cv::Point2d >		VEC_CV2DPOINT;
 VEC_CV2DPOINT vec_image_points;
 vec_image_points.push_back(cv::Point2d(0.0, 0.0));			// top-left corner
 vec_image_points.push_back(cv::Point2d(objCamera.m_img_width-1, 0.0));	// top-right corner
 vec_image_points.push_back(cv::Point2d(objCamera.m_img_width-1, objCamera.m_img_height-1));	// bottom-right corner
 vec_image_points.push_back(cv::Point2d(0.0, objCamera.m_img_height-1));	// bottom-left corner
+
 ```
+
 <br>
 We compute the undistorted coordinates for each corner independently as they are not related. <br>
+
 ```
+
 // Initialise the output undistorted point to be the same as the distort point
 double undistorted_x = vec_image_points[i].x; 
 double undistorted_y = vec_image_points[i].y;
@@ -75,6 +81,8 @@ options.max_num_iterations = 50; // Set to 50 iterations
 
 ceres::Solver::Summary summary;
 ceres::Solve(options, &problem, &summary);
+
 ```
+
 <br>
 The optimisation is finished within a few iterations.
